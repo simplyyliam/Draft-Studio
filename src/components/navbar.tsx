@@ -7,7 +7,7 @@ export const ModularNav: React.FC<HtmlHTMLAttributes<HTMLDivElement>> = ({
     ...props
 }) => {
     return (
-        <div className={`flex items-center justify-between gap-4 p-1 bg-neutral-200 rounded-full border-2 border-[#ECECEC] shadow-[inset_0_4px_7px_-3px_#01010125] ${className}`} {...props}>{children}</div>
+        <div className={`flex items-center justify-between gap-4 p-1 rounded-full border-2 border-[#ECECEC] shadow-[inset_0_4px_7px_-3px_#01010125] ${className}`} {...props}>{children}</div>
     )
 }
 
