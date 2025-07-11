@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ModularNav, NavLink } from "./components/navbar";
 import { Create } from "./components/create";
 import { useBoardStore } from "./stores/BoardStore";
 import { CreatePenal } from "./components/CreateModal";
 import { CloseButton } from "./components/CloseButton";
-import { PanelRightCloseIcon, X } from "lucide-react";
+import { X } from "lucide-react";
+import gsap from "gsap";
 
 function App() {
   const [activeNav, setActiveNav] = useState<string | null>("Boards");
@@ -13,12 +14,14 @@ function App() {
   const [createModal, setCreateModal] = useState(false);
   const { boards, addBoard } = useBoardStore();
 
+  const panelRef = useRef<HTMLDivElement>(null);
+
   const handleCreate = () => {
-    if(!name?.trim()) return
-    addBoard(name)
-    setName("")
-    setDescription("")
-  }
+    if (!name?.trim()) return;
+    addBoard(name);
+    setName("");
+    setDescription("");
+  };
 
   const handleCreateModal = () => {
     setCreateModal(true);
@@ -31,6 +34,18 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (!createModal) return;
+    if (createModal) {
+      gsap.to(panelRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: "expo.out",
+      });
+    }
+  }, [createModal]);
+
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       <div className="flex items-center justify-between w-[70%]">
@@ -38,7 +53,7 @@ function App() {
           <NavLink
             className={`${
               activeNav === "Boards"
-                ? "text-white bg-[#FFAC4D] shadow-[0px_4px_15px_-3px_#FFAC4D]"
+                ? "text-white bg-blue-500 shadow-[0px_4px_15px_-3px_#608ff550]"
                 : "text-black"
             }`}
             onClick={() => {
@@ -50,7 +65,7 @@ function App() {
           <NavLink
             className={`${
               activeNav === "All"
-                ? "text-white bg-[#FFAC4D] shadow-[0px_4px_15px_-3px_#FFAC40]"
+                ? "text-white bg-blue-500 shadow-[0px_4px_15px_#608ff550]"
                 : "text-black"
             }`}
             onClick={() => {
@@ -63,46 +78,57 @@ function App() {
         <Create>
           <button
             onClick={handleCreateModal}
-            className={`flex items-center justify-center p-3 w-full h-full rounded-full cursor-pointer bg-[#FFAC4D] shadow-[0px_4px_15px_-4px_#FFAC4D] text-white transition ease-linear`}
+            className={`flex items-center justify-center p-3 w-full h-full rounded-full cursor-pointer bg-blue-500 shadow-[0px_4px_15px_-4px_#608ff550] text-white transition ease-linear`}
           >
             Create
           </button>
         </Create>
       </div>
       {createModal && (
-        <div className="flex gap-4">
+        <div
+          ref={panelRef}
+          className="flex gap-4 opacity-0 scale-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
+        >
           <CreatePenal>
-            <div className="flex flex-col gap-2">
-              <h1>Board Name</h1>
-              <input
-                className="bg-[#959595] p-2.5 rounded-md w-full focus:outline-none text-white shadow-lg"
-                type="text"
-                placeholder="Type here..."
-                value={name ?? ""}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <h1>Board Description (Optional)</h1>
-              <textarea
-                className="bg-[#959595] p-2.5 rounded-md w-full h-[11em] focus:outline-none text-white shadow-lg"
-                placeholder="Type here..."
-                value={description ?? ""}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-            <button
-              onClick={handleCreate}
-              className={`flex items-center justify-center p-3 w-full h-full rounded-full cursor-pointer bg-[#FFAC4D] shadow-[0px_4px_15px_-4px_#FFAC4D] text-white transition ease-linear duration-200 hover:bg-[#ff9900] hover:shadow-[0px_8px_24px_-4px_#FFAC4D] hover:scale-105`}
-            >
-              Create
-            </button>
+              <div className="flex flex-col gap-2">
+                <h1 className="text-lg font-semibold text-gray-900">Board Name</h1>
+                <input
+                  className="bg-white/60 border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-400 transition"
+                  type="text"
+                  placeholder="Type here..."
+                  value={name ?? ""}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <h1 className="text-lg font-semibold text-gray-900">
+                  Board Description{" "}
+                  <span className="text-gray-400 text-sm">(Optional)</span>
+                </h1>
+                <textarea
+                  className="bg-white/60 border border-gray-300 p-3 rounded-lg w-full h-[8em] focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-400 transition resize-none"
+                  placeholder="Type here..."
+                  value={description ?? ""}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+              <button
+                onClick={handleCreate}
+                className="flex items-center justify-center p-3 w-full rounded-xl cursor-pointer bg-blue-500 shadow-md text-white font-semibold transition hover:bg-blue-600 hover:shadow-lg active:scale-95"
+              >
+                Create
+              </button>
           </CreatePenal>
           <CloseButton onClick={handlePanelClose}>
-            <X />
+            <X className="w-6 h-6 text-gray-500 hover:text-gray-700 transition" />
           </CloseButton>
         </div>
       )}
+      <div className="flex w-[70%] h-[60%]">
+        {boards.map((board) => (
+          <div key={board.id} className="">{board.name}</div>
+        ))}
+      </div>
     </div>
   );
 }

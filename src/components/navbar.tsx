@@ -17,6 +17,6 @@ export const NavLink: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
     ...props
 }) => {
     return (
-        <button className={`flex items-center justify-center w-[71px] p-3 rounded-full cursor-pointer hover:shadow-[0px_4px_15px_-3px_#FFAC40] hover:bg-[#FFAC40] hover:text-white transition ease-linear ${className}`} {...props}>{children}</button>
+        <button className={`flex items-center justify-center w-[71px] p-3 rounded-full cursor-pointer hover:shadow-[0px_4px_15px_-3px_#608ff550] hover:bg-blue-500 hover:text-white transition ease-linear ${className}`} {...props}>{children}</button>
     )
 }
