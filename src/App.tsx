@@ -42,7 +42,7 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen gap-10">
-      <div className="flex items-center justify-between w-[70%]">
+      <div className="flex items-center justify-between w-[70vw]">
         <ModularNav>
           <NavLink
             className={`${
@@ -81,7 +81,9 @@ function App() {
         >
           <CreatePenal>
             <div className="flex flex-col gap-2">
-              <h1 className="text-lg font-semibold text-gray-900">Board Name</h1>
+              <h1 className="text-lg font-semibold text-gray-900">
+                Board Name
+              </h1>
               <input
                 className="bg-white/60 border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-400 transition"
                 type="text"
@@ -114,7 +116,7 @@ function App() {
           </CloseButton>
         </div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-[70vw] w-full h-[60%] p-4 auto-rows-fr">
+      <div className="max-w-[70vw] h-[60%] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-6">
         {boards.map((board) => (
           <Column key={board.id}>{board.name}</Column>
         ))}

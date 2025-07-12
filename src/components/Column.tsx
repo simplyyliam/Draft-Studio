@@ -2,11 +2,16 @@ import type { HtmlHTMLAttributes } from "react";
 import type React from "react";
 
 export const Column: React.FC<HtmlHTMLAttributes<HTMLDivElement>> = ({
-    children,
-    className,
-    ...props
+  children,
+  className,
+  ...props
 }) => {
-    return (
-        <div className={`flex text-xl text-black/50 font-semibold bg-[#E5E5E5] p-4 w-90 h-40 rounded-2xl ${className}`} {...props}>{children}</div>
-    )
-}
+  return (
+    <div
+      className={`flex flex-col bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-2xl w-[20em] max-h-30 p-4 overflow-hidden ${className}`}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
